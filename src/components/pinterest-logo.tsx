@@ -1,7 +1,10 @@
+import { Button } from "./ui/button";
+
 export function PinterestLogo() {
   return (
-    <div className="flex items-center gap-2">
+    <Button variant="ghost" /*onClick={}*/>
       <svg
+        target=""
         width="24"
         height="24"
         viewBox="0 0 24 24"
@@ -15,6 +18,6 @@ export function PinterestLogo() {
         />
       </svg>
       <span className="font-bold text-xl text-primary hidden sm:inline">Pinterest</span>
-    </div>
+    </Button>
   )
 }

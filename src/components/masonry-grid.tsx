@@ -3,6 +3,10 @@
 import { useState } from "react"
 import { PinCard } from "@/components/pin-card"
 import Image from "next/image"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "@/store/store"
+import { setSelectedPin } from "@/store/features/pins/pinsSlice"
+
 
 const SAMPLE_PINS = [
   {
@@ -128,21 +132,22 @@ const SAMPLE_PINS = [
 ]
 
 export function MasonryGrid() {
-  const [selectedPin, setSelectedPin] = useState<null | (typeof SAMPLE_PINS)[0]>(null)
+  const dispatch = useDispatch()
+  const selectedPin = useSelector((state: RootState) => state.pins.selectedPin)
 
   return (
     <div className="container mx-auto px-4 py-6 relative">
       <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6 gap-4 space-y-4">
         {SAMPLE_PINS.map((pin) => (
           <div key={pin.id} className="break-inside-avoid">
-            <PinCard pin={pin} onCardClick={() => setSelectedPin(pin)} />
+            <PinCard pin={pin} onCardClick={() => dispatch(setSelectedPin(pin))} />
           </div>
         ))}
       </div>
       {selectedPin && (
         <div
           className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center backdrop-blur-sm"
-          onClick={() => setSelectedPin(null)}
+          onClick={() => dispatch(setSelectedPin(null))}
         >
           <div className="relative max-w-2xl w-full px-28" onClick={(e) => e.stopPropagation()}>
             <Image

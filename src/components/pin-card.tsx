@@ -5,6 +5,9 @@ import Image from "next/image"
 import { MoreHorizontal, Upload, LinkIcon, Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "@/store/store"
+import { savePin, unsavePin } from "@/store/features/pins/pinsSlice"
 
 interface Pin {
     id: number
@@ -19,7 +22,9 @@ interface PinCardProps {
 }
 
 export function PinCard({ pin, onCardClick }: PinCardProps) {
-    const [isSaved, setIsSaved] = useState(false)
+    const dispatch = useDispatch()
+    const savedPins = useSelector((state: RootState) => state.pins.savedPins)
+    const isSaved = savedPins.some(p => p.id === pin.id)
     const [isHovered, setIsHovered] = useState(false)
 
     return (
@@ -56,7 +61,11 @@ export function PinCard({ pin, onCardClick }: PinCardProps) {
                             )}
                             onClick={(e) => {
                                 e.stopPropagation() // prevents triggering onCardClick
-                                setIsSaved(!isSaved)
+                                if (isSaved) {
+                                    dispatch(unsavePin(pin.id))
+                                } else {
+                                    dispatch(savePin(pin))
+                                }
                             }}
                         >
                             {isSaved ? "Saved" : "Save"}

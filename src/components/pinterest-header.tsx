@@ -4,8 +4,11 @@ import { Search, Bell, MessageCircle, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { PinterestLogo } from "@/components/pinterest-logo"
+import { useRouter } from "next/navigation"
 
 export function PinterestHeader() {
+    const router = useRouter()
+
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
             <div className="flex items-center gap-2 px-4 py-3">
@@ -14,13 +17,25 @@ export function PinterestHeader() {
 
                 {/* Navigation */}
                 <nav className="hidden md:flex items-center gap-2">
-                    <Button variant="ghost" className="font-semibold">
+                    <Button
+                        variant="ghost"
+                        className="font-semibold"
+                        onClick={() => router.push("/")}
+                    >
                         Home
                     </Button>
-                    <Button variant="ghost" className="font-semibold">
-                        Explore
+                    <Button
+                        variant="ghost"
+                        className="font-semibold"
+                        onClick={() => router.push("/pages/saved")}
+                    >
+                        Saved
                     </Button>
-                    <Button variant="ghost" className="font-semibold">
+                    <Button
+                        variant="ghost"
+                        className="font-semibold"
+                    // onClick={() => router.push("/create")}
+                    >
                         Create
                     </Button>
                 </nav>
