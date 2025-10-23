@@ -59,15 +59,15 @@ const SAMPLE_PINS = [
   },
   {
     id: 7,
-    image: "/home-office-workspace.jpg",
-    title: "Home Office Setup",
+    image: "/sydney-sweeney-diet-exercise-7.png",
+    title: "Life is good :))",
     height: 420,
   },
   {
     id: 8,
-    image: "/yoga-meditation-wellness.jpg",
-    title: "Yoga & Wellness",
-    height: 360,
+    image: "/sydney-sweeney-2.webp",
+    title: "Lovely Sydney :')",
+    height: 420,
   },
   {
     id: 9,
@@ -92,12 +92,6 @@ const SAMPLE_PINS = [
     image: "/abstract-art.jpg",
     title: "Abstract Art",
     height: 440,
-  },
-  {
-    id: 18,
-    image: "/sydney-sweeney.jpg",
-    title: "Sydney Sweeney - street style",
-    height: 520,
   },
   {
     id: 14,
@@ -128,6 +122,12 @@ const SAMPLE_PINS = [
     image: "/architecture-modern-building.jpg",
     title: "Modern Architecture",
     height: 540,
+  },
+  {
+    id: 18,
+    image: "/sydney-sweeney.jpg",
+    title: "Sydney Sweeney - street style",
+    height: 520,
   },
 ]
 

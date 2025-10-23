@@ -35,7 +35,7 @@ export function PinCard({ pin, onCardClick }: PinCardProps) {
             onMouseLeave={() => setIsHovered(false)}
         >
             <div className="relative overflow-hidden rounded-2xl bg-muted">
-                <Image
+                <img
                     src={pin.image}
                     alt={pin.title}
                     width={300}

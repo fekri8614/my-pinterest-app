@@ -2,7 +2,7 @@ import { Button } from "./ui/button";
 
 export function PinterestLogo() {
   return (
-    <Button variant="ghost" /*onClick={}*/>
+    <Button variant="link">
       <svg
         target=""
         width="24"
@@ -17,7 +17,7 @@ export function PinterestLogo() {
           fill="currentColor"
         />
       </svg>
-      <span className="font-bold text-xl text-primary hidden sm:inline">Pinterest</span>
+      <a href="https://pinterest.com/" target="_blank"><span className="font-bold text-xl text-primary hidden sm:inline">Pinterest</span></a>
     </Button>
   )
 }
