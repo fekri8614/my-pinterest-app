@@ -1,32 +1,28 @@
 "use client"
 
 import { useState } from "react"
-import { useSelector } from "react-redux"
-import { RootState } from "@/store/store"
-import { PinCard } from "@/components/pin-card"
+import { useDispatch, useSelector } from "react-redux"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Search, Plus, Grid3x3, LayoutGrid } from "lucide-react"
-import { PinterestLogo } from "@/components/pinterest-logo"
-import { useRouter } from "next/navigation"
+import { Grid3x3, LayoutGrid } from "lucide-react"
+import { PinCard } from "@/components/pin-card"
+import { setSelectedPin } from "@/store/features/pins/pinsSlice"
+import { RootState } from "@/store/store"
 import { PinterestHeader } from "@/components/pinterest-header"
 
 export default function SavedPage() {
-    const router = useRouter()
+    const dispatch = useDispatch()
+    const pins = useSelector((state: RootState) => state.pins.savedPins)
+
+    const selectedPin = useSelector((state: RootState) => state.pins.selectedPin)
     const [selectedBoard, setSelectedBoard] = useState("all")
     const [searchQuery, setSearchQuery] = useState("")
 
-    const pins = useSelector((state: RootState) => state.pins.savedPins)
-
+    // mock data — replace with your actual Redux data
     const boards = [
-        { id: "all", name: "All Pins", count: pins.length },
-        { id: "home", name: "Home Decor", count: 89 },
-        { id: "recipes", name: "Recipes", count: 56 },
-        { id: "fashion", name: "Fashion", count: 42 },
-        { id: "travel", name: "Travel", count: 34 },
-        { id: "diy", name: "DIY Projects", count: 26 },
+        { id: 1, name: "Aesthetic", count: 24 },
+        { id: 2, name: "Travel", count: 13 },
+        { id: 3, name: "Tech UI", count: 17 },
     ]
-
 
     const filteredPins = pins.filter((pin: any) => {
         const matchesBoard =
@@ -38,62 +34,88 @@ export default function SavedPage() {
     })
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="mx-auto max-w-7xl px-4 py-8">
             {/* Header */}
             <PinterestHeader />
-
-            {/* Profile Section */}
-            <div className="mx-auto max-w-7xl px-4 py-8">
-                <div className="flex flex-col items-center gap-4 mb-8">
-                    <div className="h-24 w-24 rounded-full bg-muted" />
-                    <div className="text-center">
-                        <h1 className="text-4xl font-bold mb-2">Your Saved Pins</h1>
-                        <p className="text-muted-foreground">
-                            {pins.length} pins · {boards.length} boards
-                        </p>
-                    </div>
+            <div className="flex flex-col items-center pt-16 gap-5 mb-10 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                <div className="relative h-24 w-24">
+                    <img
+                        src="/street-wear-fashion-women.jpg"
+                        alt="Profile pic"
+                        className="h-full w-full object-cover rounded-full shadow-md border-2 border-border"
+                    />
                 </div>
 
-                {/* Board Tabs */}
-                <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2">
-                    {boards.map((board) => (
-                        <Button
-                            key={board.id}
-                            variant={selectedBoard === board.id ? "default" : "outline"}
-                            className="rounded-full whitespace-nowrap"
-                            onClick={() => setSelectedBoard(board.id)}
-                        >
-                            {board.name}
-                            <span className="ml-2 text-xs opacity-70">{board.count}</span>
-                        </Button>
+                <div className="text-center">
+                    <h1 className="text-3xl font-bold tracking-tight mb-1">Your Saved Pins</h1>
+                    <p className="text-sm text-muted-foreground">
+                        {pins.length} pins · {boards.length} boards
+                    </p>
+                </div>
+            </div>
+
+            {/* Board Tabs */}
+            <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
+                {boards.map((board) => (
+                    <Button
+                        key={board.id}
+                        variant={selectedBoard === board.id.toString() ? "default" : "outline"}
+                        className="rounded-full whitespace-nowrap"
+                        onClick={() => setSelectedBoard(board.id.toString())}
+                    >
+                        {board.name}
+                        <span className="ml-2 text-xs opacity-70">{board.count}</span>
+                    </Button>
+                ))}
+            </div>
+
+            {/* View Options */}
+            <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-2">
+                    <Button size="icon" variant="ghost">
+                        <Grid3x3 className="h-5 w-5" />
+                    </Button>
+                    <Button size="icon" variant="ghost">
+                        <LayoutGrid className="h-5 w-5" />
+                    </Button>
+                </div>
+            </div>
+
+            {/* Pinterest Masonry Grid */}
+            {filteredPins.length > 0 ? (
+                <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6 gap-4 space-y-4">
+                    {filteredPins.map((pin) => (
+                        <PinCard
+                            pin={pin}
+                            onCardClick={() => {
+                                dispatch(setSelectedPin(pin))
+                            }}
+                        />
                     ))}
                 </div>
+            ) : (
+                <div className="text-center text-muted-foreground py-16">
+                    No pins found.
+                </div>
+            )}
 
-                {/* View Options */}
-                <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-2">
-                        <Button size="icon" variant="ghost">
-                            <Grid3x3 className="h-5 w-5" />
-                        </Button>
-                        <Button size="icon" variant="ghost">
-                            <LayoutGrid className="h-5 w-5" />
-                        </Button>
+            {/* Fullscreen Pin Preview */}
+            {selectedPin && (
+                <div
+                    className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center backdrop-blur-sm"
+                    onClick={() => dispatch(setSelectedPin(null))}
+                >
+                    <div className="relative max-w-xl w-full px-28" onClick={(e) => e.stopPropagation()}>
+                        <img
+                            src={selectedPin.image}
+                            alt={selectedPin.title}
+                            width={1000}
+                            height={1000}
+                            className="w-full h-fixed rounded-2xl shadow-2xl object-contain"
+                        />
                     </div>
                 </div>
-
-                {/* Pins Grid */}
-                {filteredPins.length > 0 ? (
-                    <div className="columns-2 gap-4 sm:columns-3 lg:columns-4 xl:columns-5">
-                        {filteredPins.map((pin: any) => (
-                            <PinCard key={pin.id} pin={pin} />
-                        ))}
-                    </div>
-                ) : (
-                    <div className="text-center text-muted-foreground py-16">
-                        No pins found.
-                    </div>
-                )}
-            </div>
+            )}
         </div>
     )
 }

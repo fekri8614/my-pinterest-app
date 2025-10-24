@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from "react"
 import { PinCard } from "@/components/pin-card"
 import Image from "next/image"
 import { useDispatch, useSelector } from "react-redux"
@@ -149,13 +148,13 @@ export function MasonryGrid() {
           className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center backdrop-blur-sm"
           onClick={() => dispatch(setSelectedPin(null))}
         >
-          <div className="relative max-w-2xl w-full px-28" onClick={(e) => e.stopPropagation()}>
+          <div className="relative max-w-xl w-full px-28" onClick={(e) => e.stopPropagation()}>
             <Image
               src={selectedPin.image}
               alt={selectedPin.title}
               width={1000}
               height={1000}
-              className="w-full h-auto rounded-2xl shadow-2xl object-contain"
+              className="w-full h-fixed rounded-2xl shadow-2xl object-contain"
             />
           </div>
         </div>

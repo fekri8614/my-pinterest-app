@@ -29,92 +29,79 @@ export function PinCard({ pin, onCardClick }: PinCardProps) {
 
     return (
         <div
-            className="relative group cursor-pointer mb-4"
+            className="relative group cursor-pointer break-inside-avoid mb-4 transition-all duration-300 hover:translate-y-[-2px]"
             onClick={() => onCardClick?.(pin)}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <div className="relative overflow-hidden rounded-2xl bg-muted">
-                <img
+            <div className="relative overflow-hidden rounded-2xl bg-muted shadow-sm hover:shadow-lg transition-all duration-300">
+                <Image
                     src={pin.image}
                     alt={pin.title}
                     width={300}
                     height={pin.height}
-                    className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                 />
 
                 {/* Overlay */}
-                <div className={cn(
-                    "absolute inset-0 bg-black/40 transition-opacity duration-300",
-                    isHovered ? "opacity-100" : "opacity-0",
-                )}>
-                    {/* Top Actions */}
-                    <div className="absolute top-3 right-3 flex items-center gap-2">
+                <div
+                    className={cn(
+                        "absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
+                    )}
+                >
+                    {/* Save button */}
+                    <div className="absolute top-3 right-3">
                         <Button
                             size="sm"
                             variant="secondary"
                             className={cn(
-                                "rounded-full font-semibold transition-colors",
+                                "rounded-full font-semibold shadow-sm",
                                 isSaved
                                     ? "bg-foreground text-background"
                                     : "bg-primary text-primary-foreground"
                             )}
                             onClick={(e) => {
-                                e.stopPropagation() // prevents triggering onCardClick
-                                if (isSaved) {
-                                    dispatch(unsavePin(pin.id))
-                                } else {
-                                    dispatch(savePin(pin))
-                                }
+                                e.stopPropagation()
+                                if (isSaved) dispatch(unsavePin(pin.id))
+                                else dispatch(savePin(pin))
                             }}
                         >
                             {isSaved ? "Saved" : "Save"}
                         </Button>
                     </div>
 
-                    {/* Bottom Actions */}
+                    {/* Bottom actions */}
                     <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                            <Button
-                                size="icon"
-                                variant="secondary"
-                                className="rounded-full h-10 w-10 bg-background/90 hover:bg-background"
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                <Upload className="h-5 w-5" />
-                            </Button>
-                            <Button
-                                size="icon"
-                                variant="secondary"
-                                className="rounded-full h-10 w-10 bg-background/90 hover:bg-background"
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                <LinkIcon className="h-5 w-5" />
-                            </Button>
-                            <Button
-                                size="icon"
-                                variant="secondary"
-                                className="rounded-full h-10 w-10 bg-background/90 hover:bg-background"
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                <Heart className="h-5 w-5" />
-                            </Button>
+                            {[Upload, LinkIcon, Heart].map((Icon, idx) => (
+                                <Button
+                                    key={idx}
+                                    size="icon"
+                                    variant="secondary"
+                                    className="rounded-full h-9 w-9 bg-background/90 hover:bg-background shadow-sm"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <Icon className="h-4 w-4" />
+                                </Button>
+                            ))}
                         </div>
+
                         <Button
                             size="icon"
                             variant="secondary"
-                            className="rounded-full h-10 w-10 bg-background/90 hover:bg-background"
+                            className="rounded-full h-9 w-9 bg-background/90 hover:bg-background shadow-sm"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <MoreHorizontal className="h-5 w-5" />
+                            <MoreHorizontal className="h-4 w-4" />
                         </Button>
                     </div>
                 </div>
             </div>
 
-            {isHovered && <div className="mt-2 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <p className="text-sm font-medium line-clamp-2">{pin.title}</p>
-            </div>}
+            {/* Title */}
+            <p className="mt-2 text-sm font-medium leading-tight text-foreground/90 px-1">
+                {pin.title}
+            </p>
         </div>
     )
 }

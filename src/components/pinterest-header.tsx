@@ -10,7 +10,7 @@ export function PinterestHeader() {
     const router = useRouter()
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
+        <header className="fixed top-0 left-0 right-0 z-50 bg-background/90 border-b border-border">
             <div className="flex items-center gap-2 px-4 py-3">
                 {/* Logo */}
                 <PinterestLogo />
